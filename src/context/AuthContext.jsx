@@ -1,30 +1,25 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { useLocalStorageState } from "../hooks/useLocalStorageState";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "@/config/firebase";
 
 const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
-  const [userLocalStorage, setUserLocalStorage] = useLocalStorageState(
-    null,
-    "user"
-  );
-  const [userState, setUserState] = useState(userLocalStorage);
+  const [userState, setUserState] = useState(null);
 
   useEffect(() => {
-    console.log("testing");
-    setUserLocalStorage(userState);
-  }, [userState, setUserLocalStorage]);
+    const unsub = onAuthStateChanged(auth, (user) => {
+      setUserState(user);
+      // console.log(user);
+    });
 
-  function loginUser(userData) {
-    setUserState(userData);
-  }
-
-  function logoutUser() {
-    setUserState(null);
-  }
+    return () => {
+      unsub();
+    };
+  }, []);
 
   return (
-    <AuthContext.Provider value={{ userState, loginUser, logoutUser }}>
+    <AuthContext.Provider value={{ userState }}>
       {children}
     </AuthContext.Provider>
   );

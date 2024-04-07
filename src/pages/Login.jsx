@@ -1,15 +1,21 @@
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../config/firebase";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useUser } from "../context/AuthContext";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 function Login() {
   const [error, setError] = useState(false);
 
   const navigate = useNavigate();
 
-  const { loginUser } = useUser();
+  const { userState } = useUser();
+
+  if (userState) {
+    return <Navigate to="/" />;
+  }
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -18,14 +24,15 @@ function Login() {
     const password = formData.get("password");
 
     try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      const user = userCredential.user;
+      await signInWithEmailAndPassword(auth, email, password);
+      // const userCredential = await signInWithEmailAndPassword(
+      //   auth,
+      //   email,
+      //   password,
+      // );
+      // const user = userCredential.user;
       // console.log(user);
-      loginUser(user);
+      // loginUser(user);
       setError(false);
       navigate("/");
     } catch (error) {
@@ -34,12 +41,37 @@ function Login() {
   }
 
   return (
-    <main>
-      <form onSubmit={handleSubmit}>
-        <input name="email" type="email" placeholder="email" />
-        <input name="password" type="password" placeholder="password" />
-        <button type="submit">Login</button>
-        {error && <span>Wrong email or password!</span>}
+    <main className="flex min-h-screen items-center justify-center">
+      <form
+        onSubmit={handleSubmit}
+        className="grid w-5/6 max-w-xs gap-y-5 rounded-2xl px-4 py-6 text-center shadow-xl sm:max-w-sm sm:gap-y-7 sm:px-6 sm:py-8 sm:shadow-2xl lg:max-w-md lg:px-8 lg:py-10"
+      >
+        <h2 className="text-xl font-semibold sm:text-2xl lg:text-3xl">
+          Login Form
+        </h2>
+        <Input
+          name="email"
+          type="email"
+          placeholder="Email"
+          className="h-9 text-sm sm:py-5 sm:text-base lg:h-12 lg:text-lg"
+        />
+        <Input
+          name="password"
+          type="password"
+          placeholder="Password"
+          className="h-9 text-sm sm:py-5 sm:text-base lg:h-12 lg:text-lg"
+        />
+        <Button
+          type="submit"
+          className="capitalize sm:py-5 sm:text-base lg:py-6 lg:text-lg"
+        >
+          Login
+        </Button>
+        {error && (
+          <span className="text-sm text-red-600 lg:text-lg">
+            Wrong email or password!
+          </span>
+        )}
       </form>
     </main>
   );

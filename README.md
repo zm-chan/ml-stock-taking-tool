@@ -1,8 +1,13 @@
-# React + Vite
+# ML Stock Taking Tool
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This tool is developed for the purpose of accelerating the process of stock taking.
 
-Currently, two official plugins are available:
+## Benefits of This Tool
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Easier to conduct stock taking than writing on paper when editing stock count
+- Filter funtionality that helps searching the specific stock faster
+- Data is accessible in any device without having to carry the paperwork
+
+## Disclaimer
+
+This tool is developed in certain format for a specific company. It may not suit what you need. Kindly tailor it yourself.

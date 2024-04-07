@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { Link, useRouteError } from "react-router-dom";
 
 function ErrorElement() {
@@ -21,7 +22,9 @@ function ErrorElement() {
     <>
       <h1>{title}</h1>
       <p>{message}</p>
-      <Link to={"/"}>Go Back Home</Link>
+      <Button asChild>
+        <Link to={"/"}>Go Back Home</Link>
+      </Button>
     </>
   );
 }
