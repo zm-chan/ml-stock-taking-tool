@@ -2,32 +2,34 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import {
   Select,
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { stockPurposes } from "@/data/stockData";
 import { useState } from "react";
 
-export default function AddColumnPopOver({ handleAddColumn }) {
+export default function AddColumnDialog({ handleAddColumn }) {
   const [columnPurpose, setColumnPurpose] = useState(0);
-  const [openPopover, setOpenPopover] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
 
   function handleFormSubmit(event) {
     event.preventDefault();
     const isCancelButton =
       event.currentTarget.classList.contains("bg-background");
 
-    if (isCancelButton) return setOpenPopover(false);
+    if (isCancelButton) return setOpenDialog(false);
 
     const formData = new FormData(event.target);
     const newColumnDetails = {
@@ -39,24 +41,22 @@ export default function AddColumnPopOver({ handleAddColumn }) {
     };
 
     handleAddColumn(newColumnDetails);
-    setOpenPopover(false);
+    setOpenDialog(false);
   }
 
   return (
-    <Popover open={openPopover} onOpenChange={setOpenPopover}>
-      <PopoverTrigger asChild>
+    <Dialog open={openDialog} onOpenChange={setOpenDialog}>
+      <DialogTrigger asChild>
         <Button variant="outline" className="lg:text-lg">
           Add New Column
         </Button>
-      </PopoverTrigger>
-      <PopoverContent className="sm:w-96 lg:w-[448px]" align="start">
-        <div>
-          <h4 className="font-medium leading-none lg:text-lg">
-            Column Details
-          </h4>
-        </div>
-        <form onSubmit={handleFormSubmit} className="mt-4 grid gap-4 sm:gap-6">
-          <div className="grid grid-cols-3 items-center gap-4">
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px] lg:max-w-lg">
+        <DialogHeader>
+          <DialogTitle className="lg:text-2xl">Column Details</DialogTitle>
+        </DialogHeader>
+        <form onSubmit={handleFormSubmit} className="grid gap-4 lg:py-4">
+          <div className="grid grid-cols-4 items-center gap-4 sm:grid-cols-3">
             <Label className="lg:text-lg">Purpose</Label>
             <Select
               onValueChange={(value) =>
@@ -64,7 +64,7 @@ export default function AddColumnPopOver({ handleAddColumn }) {
               }
               value={columnPurpose}
             >
-              <SelectTrigger className="col-span-2 h-8 sm:h-10 lg:text-lg">
+              <SelectTrigger className="col-span-3 h-8 sm:col-span-2 sm:h-10 lg:text-lg">
                 <SelectValue placeholder="Select a purpose" />
               </SelectTrigger>
               <SelectContent>
@@ -80,17 +80,17 @@ export default function AddColumnPopOver({ handleAddColumn }) {
               </SelectContent>
             </Select>
           </div>
-          <div className="grid grid-cols-3 items-center gap-4">
+          <div className="grid grid-cols-4 items-center gap-4 sm:grid-cols-3">
             <Label htmlFor="date" className="lg:text-lg">
               Date
             </Label>
             <Input
               id="date"
               name="date"
-              className="col-span-2 h-8 sm:h-10 lg:text-lg"
+              className="col-span-3 h-8 sm:col-span-2 sm:h-10 lg:text-lg"
             />
           </div>
-          <div className="grid grid-cols-3 items-center gap-4">
+          <div className="grid grid-cols-4 items-center gap-4 sm:grid-cols-3">
             <Label htmlFor="customerDetail" className="lg:text-lg">
               Customer Detail
             </Label>
@@ -98,11 +98,12 @@ export default function AddColumnPopOver({ handleAddColumn }) {
               id="customerDetail"
               name="customerDetail"
               disabled={columnPurpose === 2 ? false : true}
-              className={`col-span-2 h-8 sm:h-10 lg:text-lg ${columnPurpose === 2 ? "" : "bg-slate-300"}`}
+              className={`col-span-3 h-8 sm:col-span-2 sm:h-10 lg:text-lg ${
+                columnPurpose === 2 ? "" : "bg-slate-300"
+              }`}
             />
           </div>
-
-          <div className="flex items-center justify-end gap-4 lg:gap-6">
+          <DialogFooter className="mt-2 gap-3">
             <Button
               variant="outline"
               onClick={handleFormSubmit}
@@ -113,9 +114,9 @@ export default function AddColumnPopOver({ handleAddColumn }) {
             <Button type="submit" className="lg:text-lg">
               Confirm
             </Button>
-          </div>
+          </DialogFooter>
         </form>
-      </PopoverContent>
-    </Popover>
+      </DialogContent>
+    </Dialog>
   );
 }

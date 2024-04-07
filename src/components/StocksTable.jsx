@@ -1,5 +1,5 @@
 import { useState } from "react";
-import AddColumnPopOver from "./AddColumnPopOver";
+import AddColumnDialog from "./AddColumnDialog";
 
 import {
   retailProducts,
@@ -381,7 +381,7 @@ function StocksTable({
     <div className="mt-8">
       <div className="flex flex-col gap-3 text-center sm:flex-row sm:items-center sm:gap-6 lg:gap-8 lg:text-lg">
         <h3 className="font-semibold uppercase">{stocksMode}</h3>
-        <AddColumnPopOver handleAddColumn={handleAddColumn} />
+        <AddColumnDialog handleAddColumn={handleAddColumn} />
         <Button onClick={handleSaveColumn} className="lg:text-lg">
           Save Data
         </Button>
