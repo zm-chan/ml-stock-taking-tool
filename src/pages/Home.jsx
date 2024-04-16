@@ -1,5 +1,3 @@
-import { useNavigate } from "react-router-dom";
-import { useUser } from "../context/AuthContext";
 import { add, format } from "date-fns";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -14,6 +12,7 @@ import { auth } from "@/config/firebase";
 
 function Home() {
   const [currentDateState, setCurrentDateState] = useState(new Date());
+  const dateString = currentDateState.toDateString();
   const formattedDate = format(currentDateState, "MMMM yyyy");
   const formattedDateForDatabase = formattedDate
     .toLowerCase()
@@ -27,7 +26,7 @@ function Home() {
     error: isFetchingError,
     setData,
     setRefetch,
-  } = useFetchDoc({ getProducts, stocksMode, formattedDateForDatabase });
+  } = useFetchDoc({ getProducts, stocksMode, dateString });
   const {
     mutate,
     isLoading: isSettingLoading,
@@ -79,14 +78,13 @@ function Home() {
 
   async function handleSaveData(data) {
     // console.log(stocksMode, data, formattedDateForDatabase);
-    mutate({ stocksMode, formattedDateForDatabase, data });
-  }
+    // console.log(currentDateState.toDateString());
 
-  const navigate = useNavigate();
+    mutate({ stocksMode, currentDateState, data });
+  }
 
   function handleLogout() {
     signOut(auth);
-    navigate("/login");
   }
 
   let tableContent;

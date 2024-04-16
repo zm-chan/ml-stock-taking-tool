@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 
 export default function useFetchDoc({
   getProducts: queryFn,
-  stocksMode: collection,
-  formattedDateForDatabase: id,
+  stocksMode,
+  dateString,
 }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -16,7 +16,7 @@ export default function useFetchDoc({
         setIsLoading(true);
         setError(false);
 
-        const data = await queryFn(collection, id);
+        const data = await queryFn(stocksMode, dateString);
 
         setData(data);
         setError(false);
@@ -29,7 +29,7 @@ export default function useFetchDoc({
     }
 
     fetchDoc();
-  }, [queryFn, collection, id, refetch]);
+  }, [queryFn, stocksMode, dateString, refetch]);
 
   return {
     isLoading,

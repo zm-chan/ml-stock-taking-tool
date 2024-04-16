@@ -19,13 +19,15 @@ function ErrorElement() {
   }
 
   return (
-    <>
-      <h1>{title}</h1>
-      <p>{message}</p>
-      <Button asChild>
-        <Link to={"/"}>Go Back Home</Link>
-      </Button>
-    </>
+    <div className="flex min-h-dvh items-center justify-center">
+      <div className="space-y-4 text-center">
+        <h1 className="text-2xl font-semibold lg:text-4xl">{title}</h1>
+        <p className="lg:text-2xl lg:text-slate-400">{message}</p>
+        <Button asChild className="lg:px-4 lg:py-6 lg:text-lg">
+          <Link to={"/"}>Go Back Home</Link>
+        </Button>
+      </div>
+    </div>
   );
 }
 

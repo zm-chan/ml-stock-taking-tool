@@ -1,8 +1,23 @@
 import { db } from "@/config/firebase";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { format } from "date-fns";
+import { collection, doc, getDoc, setDoc } from "firebase/firestore";
 
-export async function getProducts(collection, id) {
-  const docSnap = await getDoc(doc(db, collection, id));
+function setDocRef(stocksMode, currentDateState) {
+  const stocksModeCollectionRef = collection(db, "stockModes");
+  const stocksModeDocRef = doc(stocksModeCollectionRef, stocksMode);
+  const yearCollectionRef = collection(stocksModeDocRef, "years");
+  const yearDocRef = doc(yearCollectionRef, format(currentDateState, "yyyy"));
+  const monthCollectionRef = collection(yearDocRef, "months");
+  const monthDocRef = doc(monthCollectionRef, format(currentDateState, "MMMM"));
+
+  return monthDocRef;
+}
+
+export async function getProducts(stocksMode, dateString) {
+  const currentDateState = new Date(dateString);
+  const monthDocRef = setDocRef(stocksMode, currentDateState);
+
+  const docSnap = await getDoc(monthDocRef);
 
   if (docSnap.exists()) {
     return docSnap.data().data;
@@ -11,6 +26,8 @@ export async function getProducts(collection, id) {
   return [];
 }
 
-export async function setProducts({ collection, id, data }) {
-  return await setDoc(doc(db, collection, id), { data });
+export async function setProducts({ stocksMode, currentDateState, data }) {
+  const monthDocRef = setDocRef(stocksMode, currentDateState);
+
+  return await setDoc(monthDocRef, { data });
 }
