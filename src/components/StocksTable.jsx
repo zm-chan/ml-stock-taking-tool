@@ -66,7 +66,9 @@ function StocksTable({
     const extractColumnDateAndStockCount = Object.fromEntries(
       paginatedStockColumnData.map((stockColumnData) => {
         return [
-          stockColumnData.date.split(" ").join("-"),
+          stockColumnData.date.split(" ").join("-") +
+            "-" +
+            stockColumnData.columnDetail.split(" ").join("-"),
           stockColumnData.stockCount[i],
         ];
       }),
@@ -90,9 +92,18 @@ function StocksTable({
   if (paginatedStockColumnData.length !== 0) {
     const mapStockColumnsForDef = paginatedStockColumnData.map(
       (stockColumnData, i) => {
+        // console.log(
+        //   stockColumnData.date.split(" ").join("-") +
+        //     "-" +
+        //     stockColumnData.columnDetail.split(" ").join("-"),
+        // );
+
         const columnObject = {
           header: stockColumnData.date,
-          accessorKey: stockColumnData.date.split(" ").join("-"),
+          accessorKey:
+            stockColumnData.date.split(" ").join("-") +
+            "-" +
+            stockColumnData.columnDetail.split(" ").join("-"),
           footer: stockColumnData.columnDetail,
         };
 
@@ -239,7 +250,12 @@ function StocksTable({
     setStockColumnsData((prevStockColumnsData) => {
       const editIndex = prevStockColumnsData.findIndex(
         (prevStockColumnData) => {
-          return prevStockColumnData.date.split(" ").join("-") === columnId;
+          return (
+            prevStockColumnData.date.split(" ").join("-") +
+              "-" +
+              prevStockColumnData.columnDetail.split(" ").join("-") ===
+            columnId
+          );
         },
       );
 
@@ -292,6 +308,8 @@ function StocksTable({
           return a.index - b.index;
         });
 
+      // console.log(orderedIndexes);
+
       const indexesAfterEditIndex = [
         orderedIndexes
           .filter((index) => {
@@ -302,6 +320,9 @@ function StocksTable({
           return index.index > editIndex;
         }),
       ];
+
+      // console.log(editIndex);
+      // console.log(indexesAfterEditIndex);
 
       indexesAfterEditIndex.forEach((index, i) => {
         // first column is always stock c/f, so ignore
@@ -365,17 +386,22 @@ function StocksTable({
   }
 
   function handleSaveColumn() {
-    const stockColumnsDataForDatabase = stockColumnsData.filter(
-      (stockColumnData) => {
-        return (
-          stockColumnData.columnPurpose !== 4 &&
-          stockColumnData.columnPurpose !== 5
-        );
-      },
-    );
+    // const stockColumnsDataForDatabase = stockColumnsData.filter(
+    //   (stockColumnData) => {
+    //     return (
+    //       stockColumnData.columnPurpose !== 4 &&
+    //       stockColumnData.columnPurpose !== 5
+    //     );
+    //   },
+    // );
 
-    handleSaveData(stockColumnsDataForDatabase);
+    // handleSaveData(stockColumnsDataForDatabase);
+    handleSaveData(stockColumnsData);
   }
+
+  // console.log(stockColumnsDataAdjustment);
+  // console.log(columns);
+  // console.log(paginatedStockColumnData);
 
   return (
     <div className="mt-8">

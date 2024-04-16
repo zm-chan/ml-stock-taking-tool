@@ -13,7 +13,7 @@ function EditableCell({ getValue, row, column, table }) {
     <Input
       type="number"
       value={value}
-      className="w-14 lg:w-16 lg:text-lg"
+      className="w-16 lg:w-20 lg:text-lg"
       onChange={(e) => setValue(e.target.value)}
       onBlur={handleOnBlur}
     />

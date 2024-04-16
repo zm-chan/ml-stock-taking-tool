@@ -106,6 +106,7 @@ export default function AddColumnDialog({ handleAddColumn }) {
           <DialogFooter className="mt-2 gap-3">
             <Button
               variant="outline"
+              type="button"
               onClick={handleFormSubmit}
               className="lg:text-lg"
             >

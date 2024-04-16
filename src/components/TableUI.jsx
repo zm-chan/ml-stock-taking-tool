@@ -88,6 +88,8 @@ function TableUI({
                     textColor = "text-blue-600";
                   }
 
+                  // console.log(header.id);
+
                   return (
                     <TableHead
                       key={header.id}
