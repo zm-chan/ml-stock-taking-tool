@@ -97,10 +97,9 @@ function Home() {
     tableContent = <p className="text-red-600">Error fetching data</p>;
   }
 
-  if (!isFetchingLoading && (data.length === 0 || data.length > 0)) {
+  if (data.length === 0 || data.length > 0) {
     tableContent = (
       <StocksTable
-        key={`${stocksMode}-${formattedDateForDatabase}`}
         stocksMode={stocksMode}
         handleSaveData={handleSaveData}
         stockColumnsData={data}

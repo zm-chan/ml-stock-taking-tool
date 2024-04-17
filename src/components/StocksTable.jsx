@@ -414,6 +414,11 @@ function StocksTable({
       </div>
 
       <TableUI
+        key={
+          stockColumnsData.length === 0
+            ? 0
+            : stockColumnsData[0].stockCount.length
+        }
         data={stockColumnsDataAdjustment}
         columns={columns}
         stockColumnsData={paginatedStockColumnData}
