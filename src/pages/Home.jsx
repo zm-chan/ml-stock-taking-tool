@@ -14,10 +14,6 @@ function Home() {
   const [currentDateState, setCurrentDateState] = useState(new Date());
   const dateString = currentDateState.toDateString();
   const formattedDate = format(currentDateState, "MMMM yyyy");
-  const formattedDateForDatabase = formattedDate
-    .toLowerCase()
-    .split(" ")
-    .join("-");
 
   const [stocksMode, setStocksMode] = useState("retail");
   const {
@@ -100,6 +96,7 @@ function Home() {
   if (data.length === 0 || data.length > 0) {
     tableContent = (
       <StocksTable
+        key={`${stocksMode}-${format(currentDateState, "MMMM-yyyy")}`}
         stocksMode={stocksMode}
         handleSaveData={handleSaveData}
         stockColumnsData={data}
