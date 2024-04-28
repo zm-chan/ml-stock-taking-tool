@@ -69,7 +69,7 @@ export default function AddColumnDialog({ handleAddColumn }) {
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  {stockPurposes.map((stockPurpose, i) => {
+                  {stockPurposes.slice(0, 4).map((stockPurpose, i) => {
                     return (
                       <SelectItem key={stockPurpose} value={i}>
                         {stockPurpose}
