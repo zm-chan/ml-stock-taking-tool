@@ -209,7 +209,7 @@ function StocksTable({
 
     const orderedIndexes = filteredStockBalanceIndex
       .concat(filteredStockCFIndex)
-      .sort();
+      .sort((a, b) => a - b);
 
     // console.log(orderedIndexes);
 
@@ -292,7 +292,9 @@ function StocksTable({
 
     const orderedIndexes = filteredStockBalanceIndex
       .concat(filteredStockCFIndex)
-      .sort();
+      .sort((a, b) => a - b);
+
+    // console.log(orderedIndexes);
 
     // Column Purpose 3 & 4 & 5 (stock balance, stock check & stock diff) is only true for adding first time.
     if (
@@ -384,14 +386,20 @@ function StocksTable({
     // last 3 items's condition we add 1 because stockColumnData doesn't include product column
     if (
       columnIndex === 0 ||
-      columnIndex === 1 ||
+      (page === 1 && columnIndex === 1) ||
       columnIndex >= stockColumnsData.length + 1 - 3
     ) {
       // console.log(columnIndex, stockColumnsData.length);
       return;
     }
 
-    const columnIndexInStockColumnsData = columnIndex - 1;
+    const adjustedColumnIndex = (page - 1) * allowedColumns + columnIndex;
+
+    // console.log(adjustedColumnIndex);
+
+    const columnIndexInStockColumnsData = adjustedColumnIndex - 1;
+
+    // console.log(columnIndexInStockColumnsData);
 
     setStockColumnsData((prevStockColumnsData) => {
       const stockColumnsDataBeforeCalculatingLast3Columns = [
@@ -485,6 +493,7 @@ function StocksTable({
 
       indexesAfterEditIndex.forEach((index, i) => {
         // first column is always stock c/f, so ignore
+        // And also because the 1st column index is the last column index of the column indexes that are before the editing column index, and it is used as the starting column index for calculation of 2nd column index. We don't need to do calculation for the 1st column index
         if (i === 0) {
           return;
         }
