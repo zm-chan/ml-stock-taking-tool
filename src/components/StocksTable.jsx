@@ -245,9 +245,7 @@ function StocksTable({
       },
     );
 
-    const newStockColumnsData = stockColumnsDataBeforeCalculatingLast3Columns;
-
-    [
+    const newStockColumnsData = [
       ...stockColumnsDataBeforeCalculatingLast3Columns.slice(
         0,
         stockColumnsDataBeforeCalculatingLast3Columns.length - 3,
@@ -560,6 +558,35 @@ function StocksTable({
     handleSaveData(stockColumnsData);
   }
 
+  function handleClearStockCheck() {
+    if (window.confirm("Are you sure you want to clear the stock check?")) {
+      setStockColumnsData((prevStockColumnsData) => {
+        const lastCashBalanceColumn = prevStockColumnsData.at(-3);
+        const stockCheckColumn = prevStockColumnsData.at(-2);
+        const stockDiffColumn = prevStockColumnsData.at(-1);
+
+        stockCheckColumn.stockCount = stockCheckColumn.stockCount.map(() => {
+          return 0;
+        });
+
+        stockDiffColumn.stockCount = stockCheckColumn.stockCount.map(
+          (count, index) => {
+            return count - lastCashBalanceColumn.stockCount[index];
+          },
+        );
+
+        const newStockColumnsData = [
+          ...prevStockColumnsData.slice(0, prevStockColumnsData.length - 3),
+          lastCashBalanceColumn,
+          stockCheckColumn,
+          stockDiffColumn,
+        ];
+
+        return newStockColumnsData;
+      });
+    }
+  }
+
   // console.log(stockColumnsDataAdjustment);
   // console.log(columns);
   // console.log(paginatedStockColumnData);
@@ -571,6 +598,13 @@ function StocksTable({
         <AddColumnDialog handleAddColumn={handleAddColumn} />
         <Button onClick={handleSaveColumn} className="lg:text-lg">
           Save Data
+        </Button>
+        <Button
+          onClick={handleClearStockCheck}
+          className="lg:text-lg"
+          variant="secondary"
+        >
+          Clear Stock Check
         </Button>
       </div>
 
