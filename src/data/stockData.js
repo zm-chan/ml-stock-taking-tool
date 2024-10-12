@@ -31,7 +31,7 @@ export const retailProducts = [
   "deep pore cleanser gel",
   "cleansing milk",
   "body scrub",
-  "cellutlite inhibtor",
+  "cellulite inhibtor",
   "hydrating lotion",
   "lavendox",
   "firm up",

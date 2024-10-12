@@ -7,7 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   flexRender,
   getCoreRowModel,
@@ -26,6 +26,8 @@ function TableUI({
   handlePagination,
 }) {
   const [columnFilters, setColumnFilters] = useState([]);
+  const [searchFilter, setSearchFilter] = useState("");
+  const timeoutRef = useRef(null);
 
   const table = useReactTable({
     data,
@@ -43,15 +45,27 @@ function TableUI({
     },
   });
 
+  function handleInputChange(event) {
+    setSearchFilter(event.target.value);
+
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    const newTimeout = setTimeout(() => {
+      table.getColumn("stockName")?.setFilterValue(event.target.value);
+    }, 500);
+
+    timeoutRef.current = newTimeout;
+  }
+
   return (
     <>
       <div className="mt-8 flex flex-col gap-2 sm:flex-row sm:gap-6 lg:gap-8">
         <Input
           placeholder="Filter stocks..."
-          value={table.getColumn("stockName")?.getFilterValue() ?? ""}
-          onChange={(event) =>
-            table.getColumn("stockName")?.setFilterValue(event.target.value)
-          }
+          value={searchFilter}
+          onChange={handleInputChange}
           className="max-w-sm sm:h-10 lg:text-lg"
         />
 
